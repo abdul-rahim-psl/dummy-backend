@@ -1,8 +1,5 @@
-import {
-  AuditAction,
-  AuditStatus,
-  AuditMetadata,
-} from '../dto/create-audit-log.dto';
+import { AuditAction, AuditStatus } from 'tcs-lib';
+import type { AuditMetadata } from 'tcs-lib';
 
 export interface AuditLog {
   id: string;

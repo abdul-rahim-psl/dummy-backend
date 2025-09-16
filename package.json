@@ -27,6 +27,7 @@
     "class-validator": "^0.14.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "tcs-lib": "file:../tcs-lib",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
