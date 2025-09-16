@@ -1,0 +1,317 @@
+{
+  "info": {
+    "name": "Audit Logger API",
+    "description": "Complete collection for testing Audit Logger API endpoints including original and TCS lib implementations",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "audit-logger-api-2025",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Original Audit API",
+      "item": [
+        {
+          "name": "Create Audit Log",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timestamp\": \"2025-09-16T12:34:56Z\",\n  \"actor\": \"user123\",\n  \"tenantId\": \"bank01\",\n  \"action\": \"DEPLOY_PACKAGE\",\n  \"entity\": \"pacs008_endpoint\",\n  \"status\": \"SUCCESS\",\n  \"metadata\": {\n    \"version\": \"v2.1.0\",\n    \"sessionId\": \"sess_abc123\",\n    \"ipAddress\": \"192.168.1.100\",\n    \"userAgent\": \"Mozilla/5.0\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/audit",
+              "host": ["{{base_url}}"],
+              "path": ["audit"]
+            },
+            "description": "Create a new audit log entry using the original implementation"
+          }
+        },
+        {
+          "name": "Get Audit Log by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/audit/{{audit_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["audit", "{{audit_id}}"]
+            },
+            "description": "Retrieve a specific audit log by its unique identifier"
+          }
+        },
+        {
+          "name": "Get Audit Logs by Tenant",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/audit?tenantId=bank01",
+              "host": ["{{base_url}}"],
+              "path": ["audit"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "bank01"
+                }
+              ]
+            },
+            "description": "Retrieve audit logs filtered by tenant ID"
+          }
+        },
+        {
+          "name": "Get Audit Logs by Actor",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/audit?actor=user123",
+              "host": ["{{base_url}}"],
+              "path": ["audit"],
+              "query": [
+                {
+                  "key": "actor",
+                  "value": "user123"
+                }
+              ]
+            },
+            "description": "Retrieve audit logs filtered by actor"
+          }
+        }
+      ],
+      "description": "Original audit API endpoints using local implementation"
+    },
+    {
+      "name": "TCS Library Audit API",
+      "item": [
+        {
+          "name": "Create Full Audit Log (TCS)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timestamp\": \"2025-09-16T14:30:00Z\",\n  \"actor\": \"admin456\",\n  \"tenantId\": \"bank02\",\n  \"action\": \"CREATE_ENTITY\",\n  \"entity\": \"payment_rule_v3\",\n  \"status\": \"SUCCESS\",\n  \"metadata\": {\n    \"version\": \"v3.0.0\",\n    \"sessionId\": \"sess_xyz789\",\n    \"correlationId\": \"corr_123456\",\n    \"ipAddress\": \"10.0.0.50\",\n    \"userAgent\": \"PostmanRuntime/7.32.0\",\n    \"requestSize\": 2048\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tcs-audit",
+              "host": ["{{base_url}}"],
+              "path": ["tcs-audit"]
+            },
+            "description": "Create a new audit log using TCS library with full payload"
+          }
+        },
+        {
+          "name": "Create Success Log (TCS)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actor\": \"system_user\",\n  \"tenantId\": \"bank03\",\n  \"action\": \"DEPLOY_PACKAGE\",\n  \"entity\": \"iso20022_transformer\",\n  \"metadata\": {\n    \"deploymentId\": \"deploy_2025_001\",\n    \"version\": \"v4.2.1\",\n    \"environment\": \"production\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tcs-audit/success",
+              "host": ["{{base_url}}"],
+              "path": ["tcs-audit", "success"]
+            },
+            "description": "Quick way to create a SUCCESS status audit log using TCS library"
+          }
+        },
+        {
+          "name": "Create Failure Log (TCS)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actor\": \"api_service\",\n  \"tenantId\": \"bank04\",\n  \"action\": \"UPDATE_ENTITY\",\n  \"entity\": \"customer_profile\",\n  \"metadata\": {\n    \"errorCode\": \"VALIDATION_FAILED\",\n    \"errorMessage\": \"Invalid customer data format\",\n    \"requestId\": \"req_98765\",\n    \"retryAttempt\": 2\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tcs-audit/failure",
+              "host": ["{{base_url}}"],
+              "path": ["tcs-audit", "failure"]
+            },
+            "description": "Quick way to create a FAILURE status audit log using TCS library"
+          }
+        },
+        {
+          "name": "Get TCS Audit Log by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tcs-audit/{{tcs_audit_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["tcs-audit", "{{tcs_audit_id}}"]
+            },
+            "description": "Retrieve a specific audit log by ID using TCS library"
+          }
+        },
+        {
+          "name": "Get TCS Audit Logs by Tenant",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tcs-audit?tenantId=bank02",
+              "host": ["{{base_url}}"],
+              "path": ["tcs-audit"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "bank02"
+                }
+              ]
+            },
+            "description": "Retrieve audit logs filtered by tenant ID using TCS library"
+          }
+        },
+        {
+          "name": "Get TCS Audit Logs by Actor",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tcs-audit?actor=admin456",
+              "host": ["{{base_url}}"],
+              "path": ["tcs-audit"],
+              "query": [
+                {
+                  "key": "actor",
+                  "value": "admin456"
+                }
+              ]
+            },
+            "description": "Retrieve audit logs filtered by actor using TCS library"
+          }
+        }
+      ],
+      "description": "TCS library audit API endpoints with enhanced functionality"
+    },
+    {
+      "name": "Test Data Examples",
+      "item": [
+        {
+          "name": "Authentication Success",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timestamp\": \"2025-09-16T15:45:30Z\",\n  \"actor\": \"user789\",\n  \"tenantId\": \"bank_central\",\n  \"action\": \"AUTHENTICATE\",\n  \"entity\": \"login_portal\",\n  \"status\": \"SUCCESS\",\n  \"metadata\": {\n    \"authMethod\": \"oauth2\",\n    \"ipAddress\": \"203.0.113.45\",\n    \"userAgent\": \"Chrome/118.0.0.0\",\n    \"sessionDuration\": \"3600\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/audit",
+              "host": ["{{base_url}}"],
+              "path": ["audit"]
+            },
+            "description": "Example: User authentication success"
+          }
+        },
+        {
+          "name": "Resource Access Failure",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actor\": \"service_account\",\n  \"tenantId\": \"fintech_startup\",\n  \"action\": \"ACCESS_RESOURCE\",\n  \"entity\": \"sensitive_customer_data\",\n  \"metadata\": {\n    \"resourcePath\": \"/api/v2/customers/confidential\",\n    \"errorReason\": \"INSUFFICIENT_PERMISSIONS\",\n    \"requiredRole\": \"admin\",\n    \"currentRole\": \"viewer\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tcs-audit/failure",
+              "host": ["{{base_url}}"],
+              "path": ["tcs-audit", "failure"]
+            },
+            "description": "Example: Unauthorized resource access attempt"
+          }
+        },
+        {
+          "name": "Package Deployment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actor\": \"deploy_bot\",\n  \"tenantId\": \"production_env\",\n  \"action\": \"DEPLOY_PACKAGE\",\n  \"entity\": \"payment_gateway_v5\",\n  \"metadata\": {\n    \"version\": \"5.2.1\",\n    \"environment\": \"production\",\n    \"deploymentStrategy\": \"blue_green\",\n    \"approvedBy\": \"senior_engineer_john\",\n    \"rollbackPlan\": \"automatic_on_error\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tcs-audit/success",
+              "host": ["{{base_url}}"],
+              "path": ["tcs-audit", "success"]
+            },
+            "description": "Example: Successful package deployment"
+          }
+        }
+      ],
+      "description": "Real-world examples for testing different audit scenarios"
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "description": "Base URL for the audit logger API"
+    },
+    {
+      "key": "audit_id",
+      "value": "550e8400-e29b-41d4-a716-446655440000",
+      "description": "Sample audit log ID for testing GET requests"
+    },
+    {
+      "key": "tcs_audit_id",
+      "value": "",
+      "description": "TCS audit log ID - will be populated after creating a log"
+    }
+  ],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-extract and set audit ID from response",
+          "if (pm.response.json() && pm.response.json().data && pm.response.json().data.id) {",
+          "    pm.environment.set('last_audit_id', pm.response.json().data.id);",
+          "    console.log('Extracted audit ID:', pm.response.json().data.id);",
+          "}"
+        ]
+      }
+    }
+  ]
+}
